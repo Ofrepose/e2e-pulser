@@ -46,7 +46,9 @@ Make the most of the AutoUpdater & E2E Tester to simplify your dependency manage
 
 ## Screenshots
 [<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif)
+
 [<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/testsexample.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/testsexample.gif)
+
 [<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/formexample.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/formexample.gif)
 
 
