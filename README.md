@@ -1,4 +1,4 @@
-# AutoUpdater & E2E Tester Application
+# E2E Pulser
 
 The AutoUpdater & E2E Tester is a versatile tool designed to streamline the management of your project's dependencies, keep you informed about outdated packages, and ensure the functionality of your application through end-to-end (E2E) testing. With the ability to integrate seamlessly with your project's `package.json` file, this application simplifies the process of staying up-to-date, maintaining reliable user journeys, and addressing potential issues.
 
@@ -46,6 +46,9 @@ Make the most of the AutoUpdater & E2E Tester to simplify your dependency manage
 
 ## Screenshots
 [<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif)
+[<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/testsexample.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/testsexample.gif)
+[<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/formexample.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/formexample.gif)
+
 
 ## License
 
