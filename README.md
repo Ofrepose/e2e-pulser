@@ -1,6 +1,6 @@
 # E2E Pulser
 
-The AutoUpdater & E2E Tester is a versatile tool designed to streamline the management of your project's dependencies, keep you informed about outdated packages, and ensure the functionality of your application through end-to-end (E2E) testing. With the ability to integrate seamlessly with your project's `package.json` file, this application simplifies the process of staying up-to-date, maintaining reliable user journeys, and addressing potential issues.
+E2E Pulser is a versatile tool designed to streamline the management of your project's dependencies, keep you informed about outdated packages, and ensure the functionality of your application through end-to-end (E2E) testing. With the ability to integrate seamlessly with your project's `package.json` file, this application simplifies the process of staying up-to-date, maintaining reliable user journeys, and addressing potential issues.
 
 ## Features
 
