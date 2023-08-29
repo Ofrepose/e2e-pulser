@@ -1,0 +1,9 @@
+backend/node_modules/
+backend/test-results/
+backend/playwright-report/
+backend/playwright/.cache/
+backend/screenshots/
+backend/.env
+backend/config/
+frontend/node_modules/
+
