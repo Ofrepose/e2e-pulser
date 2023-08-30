@@ -7,6 +7,8 @@ const Main = require('./Main');
 const app = express();
 const cors = require('cors');
 
+const logger = require('@ofrepose/logtastic');
+
 // environment variables
 require('dotenv').config();
 
@@ -32,6 +34,19 @@ routes.starter();
 
 (async () => {
   // every x minutes check online status of all users
+  const tester = {
+    name: 'tester'
+  };
+  logger.log(`
+███████╗██████╗ ███████╗    ██████╗ ██╗   ██╗██╗     ███████╗███████╗██████╗ 
+██╔════╝╚════██╗██╔════╝    ██╔══██╗██║   ██║██║     ██╔════╝██╔════╝██╔══██╗
+█████╗   █████╔╝█████╗      ██████╔╝██║   ██║██║     ███████╗█████╗  ██████╔╝
+██╔══╝  ██╔═══╝ ██╔══╝      ██╔═══╝ ██║   ██║██║     ╚════██║██╔══╝  ██╔══██╗
+███████╗███████╗███████╗    ██║     ╚██████╔╝███████╗███████║███████╗██║  ██║
+╚══════╝╚══════╝╚══════╝    ╚═╝      ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝ `, {color: 'blue', style: 'underline'} );
+logger.log(
+  `Backend server starting...
+`, {color: 'yellow', style: 'bold'})
   repeatChecks();
 
 })();
@@ -57,5 +72,5 @@ function repeatChecks() {
 }
 
 app.listen(PORT, () => {
-  console.log(`Starting server on port: ${PORT}`);
+  logger.log(`Starting server on port: ${PORT}`, {color: 'white', bgStyle: 'green'});
 })
