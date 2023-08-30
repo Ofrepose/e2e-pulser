@@ -63,7 +63,7 @@ router.get('/', auth, async (req, res) => {
  * @param {Object} res - The Express response object.
  * @returns {void}
  */
-router.get('/image/:filename', auth, (req, res) => {
+router.get('/image/:filename', (req, res) => {
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '..', '..', 'screenshots', filename);
     res.sendFile(filePath);
