@@ -9,6 +9,10 @@ const cors = require('cors');
 
 const logger = require('@ofrepose/logtastic');
 
+const npm = require('npm-programmatic');
+
+
+
 // environment variables
 require('dotenv').config();
 
@@ -32,45 +36,48 @@ const PORT = process.env.PORT || 5001;
 const routes = new Routes(app);
 routes.starter();
 
-(async () => {
-  // every x minutes check online status of all users
-  const tester = {
-    name: 'tester'
-  };
-  logger.log(`
-███████╗██████╗ ███████╗    ██████╗ ██╗   ██╗██╗     ███████╗███████╗██████╗ 
-██╔════╝╚════██╗██╔════╝    ██╔══██╗██║   ██║██║     ██╔════╝██╔════╝██╔══██╗
-█████╗   █████╔╝█████╗      ██████╔╝██║   ██║██║     ███████╗█████╗  ██████╔╝
-██╔══╝  ██╔═══╝ ██╔══╝      ██╔═══╝ ██║   ██║██║     ╚════██║██╔══╝  ██╔══██╗
-███████╗███████╗███████╗    ██║     ╚██████╔╝███████╗███████║███████╗██║  ██║
-╚══════╝╚══════╝╚══════╝    ╚═╝      ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝ `, {color: 'blue', style: 'underline'} );
-logger.log(
-  `Backend server starting...
-`, {color: 'yellow', style: 'bold'})
+(async () => {  
+  logger.log(
+    `Backend server starting...
+`, { color: 'yellow', style: 'bold', time: true })
   repeatChecks();
 
 })();
 
-async function CheckSiteStatus() {
-  const users = await Main.Routes.Users.Helpers.getAllUsers();
-  if (users) {
-    for (let user of users) {
-      const currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(user.id);
-      await Promise.all(currentUserProjects.map(async (project) => {
-        project.status = await Main.Routes.Projects.Helpers.onlineStatus(project.url) && 'Online' || 'Offline';
-        await project.save()
-      }));
-    }
-  }
-}
+// async function CheckSiteStatus() {
+//   const users = await Main.Routes.Users.Helpers.getAllUsers();
+//   if (users) {
+//     for (let user of users) {
+//       const currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(user.id);
+//       await Promise.all(currentUserProjects.map(async (project) => {
+//         project.status = await Main.Routes.Projects.Helpers.onlineStatus(project.url) && 'Online' || 'Offline';
+//         await project.save()
+//       }));
+//     }
+//   }
+// }
 
-function repeatChecks() {
-  CheckSiteStatus();
+// will be cron job
+// function repeatChecks() {
+  // CheckSiteStatus();
+  // setTimeout(repeatChecks, 50000); // 5 minutes in milliseconds
+// }
 
-  // Repeat the action every 5 minutes
-  setTimeout(repeatChecks, 300000); // 5 minutes in milliseconds
-}
+
+// const thisDirectory = process.cwd();
+// const filePath = path.join(__dirname, 'your_file_path_here');
+// const markdownDocumentation = generateFunctionDocumentation(thisDirectory+'/Routes/Users/Helpers.js');
+// console.log('above')
+// console.log(markdownDocumentation);
 
 app.listen(PORT, () => {
-  logger.log(`Starting server on port: ${PORT}`, {color: 'white', bgStyle: 'green'});
+  try {
+    logger.log(`Starting server on port: ${PORT}`, { color: 'white', bgStyle: 'green' });
+  } catch (err) {
+    logger.err(err, { escape: true })
+
+  }
 })
+
+
+

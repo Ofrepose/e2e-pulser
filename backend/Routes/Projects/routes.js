@@ -41,6 +41,7 @@ router.post('/add', auth,
             projectName, tech, url, json
         } = req.body;
 
+        // if url to raw json given - grab it using axios.
         if (typeof json === 'string' && json.startsWith('http')) {
             try {
                 const response = await axios.get(json);
@@ -55,31 +56,26 @@ router.post('/add', auth,
             return res.status(400).json({ errors: [{ msg: 'Project already exists' }] });
         }
         try {
-            // sort out the dependencies. ugh
-            if (!json?.dependencies) {
+            if (!json?.dependencies && !json.devDependencies) {
                 return res.status(400).json({ errors: [{ msg: 'No dependencies found in json' }] });
             }
-            const depends = Object.keys(json?.dependencies)
-            const updates = await Promise.all(depends.map(async (item) => {
+            const depends = json?.dependencies && Object.keys(json?.dependencies) || [];
+            const devDepends = json?.devDependencies && Object.keys(json?.devDependencies) || [];
+            const updates = await Promise.all([...depends, ...devDepends].map(async (item) => {
                 const packageInfo = await Main.Routes.Projects.Helpers.getLibraryInfo(item);
-                // TODO: Decide if this is A. doable and B. Worth doing. Simply would add logos of all dependencies. Good for UI but thats about it.
-                // let logo;
-                // if (packageInfo?.documentation) {
-                //     logo = await Main.Routes.Projects.Helpers.findLogo(item, packageInfo?.documentation)
-                //     console.log(`LOGO IS: ${logo}`)
-                // }
+                const currentJson = json?.dependencies?.[item] ?? json?.devDependencies?.[item];
                 return {
                     name: item,
-                    version: json.dependencies[item].replace(/\^/g, ''),
+                    version: currentJson.replace(/\^/g, ''),
                     updatedVersion: packageInfo?.latestVersion || null,
-                    updateAvailable: json.dependencies[item].replace(/\^/g, '') !== packageInfo?.latestVersion,
+                    updateAvailable: currentJson.replace(/\^/g, '') !== packageInfo?.latestVersion,
                     description: packageInfo?.description || null,
                     repoUrl: packageInfo?.repoUrl || null,
                     documentation: packageInfo?.documentation || null,
-                    // logo: logo || null
+                    dev: !!json?.devDependencies?.[item]
                 };
             }));
-            newProject = Main.Routes.Projects.Helpers.createNewProject({ projectName, tech, url, json, userId, updates: updates });
+            newProject = Main.Routes.Projects.Helpers.createNewProject({ projectName, tech, url, json, userId, updates });
             return res.send(newProject);
         } catch (err) {
             console.log(err);

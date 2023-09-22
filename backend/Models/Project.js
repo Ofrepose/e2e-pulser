@@ -50,6 +50,10 @@ const ProjectSchema = new mongoose.Schema({
       },
       logo: {
         type: String,
+      },
+      dev: {
+        type: Boolean,
+        default: false
       }
 
     }

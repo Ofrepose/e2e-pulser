@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useAuth } from '../user/AuthContext';
 import { useProject } from 'contexts/projects/ProjectContext';
+import Logtastic from '@ofrepose/logtastic';
 
 const TestContext = createContext();
 
@@ -39,15 +40,17 @@ export function TestProvider({ children }) {
       });
       data = await response.json();
       setLoading(false);
+      Logtastic.log(`✅ API - Add test 🐧`, { color: 'blue', style: 'dim'})
 
     } catch (error) {
-      console.error('Error adding application:', error);
+      Logtastic.err(`❌ API - Add Test: ${error}`, {escape: false})
       setStatus(() => "Failure")
     } finally {
       setProjects(async () => await getUser().currentUserProjects)
       setLoading(false);
       if (data?.errors) {
         setStatus("Failure");
+        Logtastic.err(`❌ API - Add Test: ${data?.errors}`, {escape: false})
       } else {
         setStatus("Success");
       }
@@ -59,13 +62,13 @@ export function TestProvider({ children }) {
     for (const test of tests) {
       await runTest({ projectId, testName: test });
     }
-    setProjects(async () => await getUser().currentUserProjects)
+    await setProjects(async () => await getUser().currentUserProjects)
   }
 
   const runSingle = async (testData) => {
     clearInfo();
     await runTest(testData);
-    setProjects(async () => await getUser().currentUserProjects)
+    await setProjects(async () => await getUser().currentUserProjects)
   }
 
   const runTest = async (testData) => {

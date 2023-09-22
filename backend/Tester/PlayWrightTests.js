@@ -174,7 +174,7 @@ class PlayWright {
 
   printTestResults() {
 
-    console.log('\nTest Results:');
+    // console.log('\nTest Results:');
     this.testResults.forEach((result, index) => {
       const status = result.passed ? 'PASSED' : 'FAILED';
       // console.log(`${index + 1}. ${result.testName}: ${status}`);

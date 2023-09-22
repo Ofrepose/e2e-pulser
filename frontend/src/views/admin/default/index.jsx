@@ -107,10 +107,6 @@ const Dashboard = () => {
                     Header: "CREATED AT",
                     accessor: "createdAt",
                   },
-                  // {
-                  //   Header: "UPDATED AT",
-                  //   accessor: "updatedAt",
-                  // },
                   {
                     Header: "LAST RUN",
                     accessor: "lastRun",

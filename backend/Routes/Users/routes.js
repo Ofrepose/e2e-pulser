@@ -109,7 +109,7 @@ router.post('/',
                 return res.status(400).json({ errors: [{ msg: 'Username and/or password are no good.' }] });
             };
             const currentUser = await User.findOne({ email: email }).select('-password');
-            await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
+            // await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
             const currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(currentUser.id);
             const currentUserComplete = { ...currentUser._doc, currentUserProjects }
 

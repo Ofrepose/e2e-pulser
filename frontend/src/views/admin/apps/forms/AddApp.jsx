@@ -132,7 +132,7 @@ export default function AddApp() {
         {/* Success or Failure Message */}
         {status === "Success" ? (
           <div className="text-xl font-bold text-green-700 dark:text-green mt-2">
-            Successfully Added Project
+            
           </div>
         ) : status === "Failure" ? (
           <div className="text-xl font-bold text-red-700 dark:text-red mt-2">

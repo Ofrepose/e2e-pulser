@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Logtastic from '@ofrepose/logtastic';
+
 const AuthContext = createContext();
 
 const API = 'http://localhost:5001/api/users/';
@@ -70,12 +72,13 @@ export function AuthProvider({ children }) {
         signOut();
       }
       setUser(() => data);
+      Logtastic.log(`✅ API - Getting User 🐧`, { color: 'green', style: 'dim'})
     } catch (error) {
-      console.error('Error signing in:', error);
+      Logtastic.err(`❌ API - Users: Error signing in: ${error.message}`, {escape: false})
       signOut();
       navigateToLogin();
     } finally {
-      setLoading(false);    
+      setLoading(false);
       return data;  
     }
   }
@@ -94,9 +97,9 @@ export function AuthProvider({ children }) {
       });
 
       const data = await response.json();
+      Logtastic.log(`✅ API - Images`, { color: 'green', style: 'italic'})
     } catch (error) {
-      console.error('Error getting image:', error);
-
+      Logtastic.err(`❌ API - Users: Error getting image: ${error.message}`, {escape: false})
     } finally {
       setLoading(false);
       return data;    
@@ -118,12 +121,13 @@ export function AuthProvider({ children }) {
 
       data = await response.json();
       setUser(data);
+      Logtastic.log(`✅ API - Users - Register`, { color: 'green', style: 'italic'})
       if(data.firstname && data.email){
         localStorage.setItem('token', data.token)
         navigate('/admin/default');
       }
     } catch (error) {
-      console.error('Error signing up:', error);
+      Logtastic.err(`❌ API - Users - Register: ${error.message}`, {escape: false})
     } finally {
       setLoading(false);
       
@@ -137,7 +141,7 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
 
-      const response = await fetch(API + '/', {
+      const response = await fetch(API + '', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

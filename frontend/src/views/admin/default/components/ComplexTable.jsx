@@ -4,6 +4,7 @@ import { MdCheckCircle, MdAddCircleOutline, MdArrowBack } from "react-icons/md";
 import { useMemo } from "react";
 import Progress from "components/progress";
 import AddApp from 'views/admin/apps/forms/AddApp';
+import { useTestProvider } from 'contexts/tests/TestContext';
 
 const ComplexTable = (props) => {
   const { columnsData, tableData, setActiveProject, setActiveProjectId } = props;
@@ -11,6 +12,7 @@ const ComplexTable = (props) => {
   const columns = useMemo(() => columnsData, [columnsData]);
 
   const [cardState, setCardState] = useState('default');
+  const { clearInfo } = useTestProvider();
 
   return (
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
@@ -47,6 +49,7 @@ const ComplexTable = (props) => {
                         onClick={() => {
                           setActiveProject(rowIndex);
                           setActiveProjectId(row.rawData._id);
+                          clearInfo();
                         }}
                         className="hover:bg-blue-200 dark:hover:bg-navy-900 focus-within:shadow-lg cursor-pointer transition duration-300 ease-in-out"
                       >

@@ -147,13 +147,15 @@ class Helpers {
      */
     async getAllUsersProjectsAndUpdatePackagesList(userId) {
         const projects = await this.getCurrentUserProjects(userId);
-        await Promise.all(projects.forEach(async (project) => {
+        if(projects.length > 0){
+            await Promise.all(projects.forEach(async (project) => {
 
-            await this.updatePackagesList(project);
-            await project.save()
-        })).catch((err) => {
-            console.log(err)
-        });
+                await this.updatePackagesList(project);
+                await project.save()
+            })).catch((err) => {
+                console.log(err)
+            });
+        }
     }
 
     /**

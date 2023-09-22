@@ -1,7 +1,7 @@
 import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
 import { MdCheckCircle, MdAddCircleOutline, MdArrowBack, MdUnfoldLess, MdUnfoldMore, MdClose, MdEdit } from "react-icons/md";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddTest from "views/admin/apps/forms/AddTest";
 import { useTestProvider } from "contexts/tests/TestContext";
 import { Tooltip } from "@chakra-ui/tooltip";
@@ -158,7 +158,7 @@ const TestingTable = (props) => {
                                 </tbody>
                             </table>
                             {info.length > 0 ? (
-                                <div className="relative px-2 !bg-black">
+                                <div className="relative p-2 !bg-black">
 
                                     <div className="text-2xl font-bold text-blue-500 dark:text-blue-500 flex justify-between">
                                         <div className="text-base font-bold text-navy-700 dark:text-white py-2">

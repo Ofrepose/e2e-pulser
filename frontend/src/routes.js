@@ -12,6 +12,7 @@ import {
   MdHome,
   MdBarChart,
   MdLock,
+  MdFindInPage
 } from "react-icons/md";
 
 const routes = [
@@ -23,10 +24,10 @@ const routes = [
     component: <MainDashboard />,
   },
   {
-    name: "Tests",
+    name: "Docs",
     layout: "/admin",
-    icon: <MdBarChart className="h-6 w-6" />,
-    path: "tests",
+    icon: <MdFindInPage className="h-6 w-6" />,
+    path: "docs",
     component: '' ,
   },
   {
