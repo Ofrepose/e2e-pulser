@@ -45,7 +45,7 @@ export function ProjectProvider({ children }){
         }finally{
             setLoading(false);
             await getUser();
-            if(data.errors){
+            if(data?.errors){
                 setStatus("Failure");
             }else{
                 setStatus("Success");

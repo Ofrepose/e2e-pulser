@@ -148,7 +148,27 @@ const Dashboard = () => {
                 columnsData={columnsDataDevelopment}
                 setActiveProject={setActiveProject}
                 raw={user?.currentUserProjects[activeProject].updates}
-                tableData={user?.currentUserProjects[activeProject].updates.map((item) => {
+                tableData={user?.currentUserProjects[activeProject].updates.filter(item => !item.dev).map((item) => {
+                  return {
+                    name: item?.name,
+                    version: item?.version,
+                    latestVersion: item?.updatedVersion?.slice(0, 10),
+                    update: item?.updateAvailable,
+                    description: item?.description,
+                    docs: item?.documentation,
+                    repo: item?.repoUrl,
+                    logo: item?.logo
+                  }
+                })}
+              />
+
+              <DevelopmentTable
+                projectName={user?.currentUserProjects[activeProject].projectName}
+                dataTitle="Dev Dependencies"
+                columnsData={columnsDataDevelopment}
+                setActiveProject={setActiveProject}
+                raw={user?.currentUserProjects[activeProject].updates}
+                tableData={user?.currentUserProjects[activeProject].updates.filter(item => item.dev).map((item) => {
                   return {
                     name: item?.name,
                     version: item?.version,
@@ -168,9 +188,6 @@ const Dashboard = () => {
 
           ) : ''
           }
-
-
-          {/* Task chart & Calendar */}
 
           <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-2">
 
