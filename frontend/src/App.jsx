@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import AdminLayout from "layouts/admin";
 import AuthLayout from "layouts/auth";
 
-import { AuthProvider } from "contexts/user/AuthContext";
+import { AuthProvider, useAuth } from "contexts/user/AuthContext";
 import { ProjectProvider } from "contexts/projects/ProjectContext";
 import { TestProvider } from "contexts/tests/TestContext";
 
 const App = () => {
+  
   return (
     <AuthProvider>
       <ProjectProvider>

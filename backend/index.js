@@ -2,15 +2,10 @@ const express = require('express');
 const Routes = require('./Routes/Index');
 const connectDB = require('./config/db');
 
-const Main = require('./Main');
-
 const app = express();
 const cors = require('cors');
 
 const logger = require('@ofrepose/logtastic');
-
-const npm = require('npm-programmatic');
-
 
 
 // environment variables
@@ -40,7 +35,7 @@ routes.starter();
   logger.log(
     `Backend server starting...
 `, { color: 'yellow', style: 'bold', time: true })
-  repeatChecks();
+  // repeatChecks();
 
 })();
 
@@ -57,18 +52,13 @@ routes.starter();
 //   }
 // }
 
-// will be cron job
 // function repeatChecks() {
   // CheckSiteStatus();
   // setTimeout(repeatChecks, 50000); // 5 minutes in milliseconds
 // }
 
 
-// const thisDirectory = process.cwd();
-// const filePath = path.join(__dirname, 'your_file_path_here');
-// const markdownDocumentation = generateFunctionDocumentation(thisDirectory+'/Routes/Users/Helpers.js');
-// console.log('above')
-// console.log(markdownDocumentation);
+
 
 app.listen(PORT, () => {
   try {

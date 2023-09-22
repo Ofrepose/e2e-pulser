@@ -9,7 +9,7 @@ const API = 'http://localhost:5001/api/test/';
 
 export function TestProvider({ children }) {
   const { getUser } = useAuth();
-  const { setProjects, projects } = useProject();
+  const { setProjects, projects, updateProjects } = useProject();
 
   const [isLoading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
@@ -46,7 +46,7 @@ export function TestProvider({ children }) {
       Logtastic.err(`❌ API - Add Test: ${error}`, {escape: false})
       setStatus(() => "Failure")
     } finally {
-      setProjects(async () => await getUser().currentUserProjects)
+      await updateProjects();
       setLoading(false);
       if (data?.errors) {
         setStatus("Failure");
@@ -62,13 +62,13 @@ export function TestProvider({ children }) {
     for (const test of tests) {
       await runTest({ projectId, testName: test });
     }
-    await setProjects(async () => await getUser().currentUserProjects)
+    await updateProjects();
   }
 
   const runSingle = async (testData) => {
     clearInfo();
     await runTest(testData);
-    await setProjects(async () => await getUser().currentUserProjects)
+    await updateProjects();
   }
 
   const runTest = async (testData) => {

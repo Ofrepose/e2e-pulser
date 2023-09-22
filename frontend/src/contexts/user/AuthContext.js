@@ -10,6 +10,7 @@ const API = 'http://localhost:5001/api/users/';
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [darkmode, setDarkmode] = useState(() => localStorage.getItem('darkMode') || false);
   const navigate = useNavigate();
 
   // Load user data from localStorage when the component mounts
@@ -170,6 +171,12 @@ export function AuthProvider({ children }) {
     navigateToLogin();
   };
 
+
+  const setMode = (darkMode) => {
+    setDarkmode(darkMode);
+    localStorage.setItem('darkMode', darkMode);
+  }
+
   return (
     <AuthContext.Provider 
         value={{ 
@@ -180,7 +187,9 @@ export function AuthProvider({ children }) {
             signUp,
             validateUser,
             getUser,
-            getImages
+            getImages,
+            setMode,
+            darkmode
             }}>
       {children}
     </AuthContext.Provider>

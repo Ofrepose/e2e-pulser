@@ -1,32 +1,26 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from '../user/AuthContext';
 
 const ProjectContext = createContext();
 
 const API = 'http://localhost:5001/api/projects/';
 
-export function ProjectProvider({ children }){
+export function ProjectProvider({ children }) {
     const { getUser, user } = useAuth();
-    const [ projects, setProjects ] = useState(user?.currentUserProjects);
-    const [ isLoading, setLoading ] = useState(false);
-    const [ status, setStatus ] = useState(null);
-    
+    const [projects, setProjects] = useState(user?.currentUserProjects);
+    const [isLoading, setLoading] = useState(false);
+    const [status, setStatus] = useState(null);
 
-    // backend is appending the projects to the user and then we call getUser once addApplication is done. So this
-    // is not needed. If I decide to destructure these two properties in seperate localStorage keys I can reactivate this.
-    // useEffect(() => {
-    //     setLoading(true);
-    //     const storedProjects = localStorage.getItem('projects');
-    //     if(storedProjects){
-    //         setProjects(JSON.parse(storedProjects));
-    //     }
-    //     setLoading(false);
-    // }, []);
+    const updateProjects = async () => {
+        const currentProjects = await getUser()?.currentUserProjects;
+        setProjects(currentProjects);
+    }
+
 
     const addApplication = async (appData) => {
         setStatus(null);
         let data;
-        try{
+        try {
             setLoading(() => true);
             const response = await fetch(API + 'add', {
                 method: 'POST',
@@ -38,30 +32,31 @@ export function ProjectProvider({ children }){
             });
 
             data = await response.json();
-            setProjects(data);          
-        }catch(error){
+            setProjects(data);
+        } catch (error) {
             console.error('Error adding application:', error);
-            setStatus(()=> "Failure")
-        }finally{
-            setLoading(false);
+            setStatus(() => "Failure")
+        } finally {
             await getUser();
-            if(data?.errors){
+            setLoading(false);
+            if (data?.errors) {
                 setStatus("Failure");
-            }else{
+            } else {
                 setStatus("Success");
             }
         }
-        
+
     };
 
-    return(
-        <ProjectContext.Provider 
-            value={{ 
-                projects, 
-                isLoading, 
+    return (
+        <ProjectContext.Provider
+            value={{
+                projects,
+                isLoading,
                 addApplication,
                 setProjects,
-                status
+                status,
+                updateProjects
             }}
         >
             {children}

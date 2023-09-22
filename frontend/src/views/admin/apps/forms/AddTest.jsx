@@ -99,7 +99,7 @@ export default function AddTest(props) {
                 <select
                     id="test"
                     name="test"
-                    className='mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none'
+                    className='mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none text-gray-600'
                     value={formData.testType}
                     onChange={handleTestTypeChange}
                     color='black'
@@ -108,7 +108,7 @@ export default function AddTest(props) {
                         <option
                             key={option}
                             value={option}
-                            className={`text-black`}
+                            className={`text-gray-600`}
                             color='black'
                         >
                             {option}

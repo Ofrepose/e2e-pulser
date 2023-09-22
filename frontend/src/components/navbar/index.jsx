@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Dropdown from "components/dropdown";
 import { Link } from "react-router-dom";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
@@ -8,8 +8,16 @@ import { useAuth } from "../../contexts/user/AuthContext";
 
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
-  const [darkmode, setDarkmode] = React.useState(false);
-  const { user, signOut } = useAuth();
+  const { user, signOut, setMode, darkmode } = useAuth();
+
+
+  React.useEffect(()=>{
+    if (!darkmode) {
+      document.body.classList.remove("dark");
+    } else {
+      document.body.classList.add("dark");
+    }
+  },[darkmode])
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -45,15 +53,7 @@ const Navbar = (props) => {
         </span>
         <div
           className="cursor-pointer text-gray-600"
-          onClick={() => {
-            if (darkmode) {
-              document.body.classList.remove("dark");
-              setDarkmode(false);
-            } else {
-              document.body.classList.add("dark");
-              setDarkmode(true);
-            }
-          }}
+          onClick={() => setMode(!darkmode)}
         >
           {darkmode ? (
             <RiSunFill className="h-4 w-4 text-gray-600 dark:text-white" />
