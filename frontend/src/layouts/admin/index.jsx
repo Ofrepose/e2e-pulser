@@ -4,6 +4,7 @@ import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes.js";
+import { handleKeyPress } from 'helpers/Events';
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -21,13 +22,22 @@ export default function Admin(props) {
     getActiveRoute(routes);
   }, [location.pathname]);
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
   const getActiveRoute = (routes) => {
     let activeRoute = "Main Dashboard";
     for (let i = 0; i < routes.length; i++) {
       if (
         window.location.href.indexOf(
           routes[i].layout + "/" + routes[i].path
-        ) !== -1 
+        ) !== -1
       ) {
         setCurrentRoute(routes[i].name);
       }
@@ -66,7 +76,7 @@ export default function Admin(props) {
         {/* Main Content */}
         <main
           className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
-          // className={`h-full flex-none transition-all md:pr-2 max-w-[1400px] mx-auto`}
+        // className={`h-full flex-none transition-all md:pr-2 max-w-[1400px] mx-auto`}
         >
           {/* Routes */}
           <div className="h-full">

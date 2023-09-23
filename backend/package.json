@@ -4,7 +4,8 @@
   "description": "API for apartment forum application",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "profiler": "node --inspect --cpu-prof index.js"
   },
   "author": "Daniel Payne",
   "license": "ISC",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Dropdown from "components/dropdown";
 import { Link } from "react-router-dom";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
@@ -11,13 +11,13 @@ const Navbar = (props) => {
   const { user, signOut, setMode, darkmode } = useAuth();
 
 
-  React.useEffect(()=>{
+  useEffect(() => {
     if (!darkmode) {
       document.body.classList.remove("dark");
     } else {
       document.body.classList.add("dark");
     }
-  },[darkmode])
+  }, [darkmode])
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -67,7 +67,7 @@ const Navbar = (props) => {
             <img
               className="h-10 w-10 rounded-full"
               src={avatar}
-              alt="Elon Musk"
+              alt="avatar"
             />
           }
           children={

@@ -1,6 +1,6 @@
 import Card from "components/card";
 import React, { useState } from "react";
-import { MdUnfoldMore, MdUnfoldLess, MdEdit } from "react-icons/md";
+import { MdUnfoldMore, MdUnfoldLess, MdEdit, MdCable, MdSmartToy } from "react-icons/md";
 import aws from '../../../../assets/img/cloudIntegrations/aws.png';
 import digitalOcean from '../../../../assets/img/cloudIntegrations/digital-ocean.png';
 
@@ -29,35 +29,55 @@ const General = (props) => {
         <div className="grid grid-cols-2 gap-4 px-2">
           <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
             <p className="text-sm text-gray-600">name</p>
-            <p className="text-base font-medium text-navy-700 dark:text-white">
-              {props?.json?.name}
+            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+              {props?.json?.name || (
+                <>
+                  <MdSmartToy className="text-blue-500 mr-1" />
+                  No Name Provided
+                </>
+              )}
             </p>
           </div>
 
           <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
             <p className="text-sm text-gray-600">Author</p>
-            <p className="text-base font-medium text-navy-700 dark:text-white">
-              {props?.json?.author}
+            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+              {props?.json?.author || (
+                <>
+                  <MdSmartToy className="text-blue-500 mr-1" />
+                  No Author Provided
+                </>
+              )}
             </p>
           </div>
 
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
             <p className="text-sm text-gray-600">License</p>
-            <p className="text-base font-medium text-navy-700 dark:text-white">
-              {props?.json?.license}
+            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+              {props?.json?.license || (
+                <>
+                  <MdSmartToy className="text-blue-500 mr-1" />
+                  No License Provided
+                </>
+              )}
             </p>
           </div>
 
           <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
             <p className="text-sm text-gray-600">Version</p>
-            <p className="text-base font-medium text-navy-700 dark:text-white">
-              {props?.json?.version}
+            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+              {props?.json?.version || (
+                <>
+                  <MdSmartToy className="text-blue-500 mr-1" />
+                  No Version Provided
+                </>
+              )}
             </p>
           </div>
 
           <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
             <p className="text-sm text-gray-600">Cloud Integrations</p>
-            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+            {/* <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
               <img
                 src={digitalOcean}
                 alt="Digital Ocean"
@@ -68,14 +88,17 @@ const General = (props) => {
                 alt="aws"
                 onClick={() => window.open(`https://docs.aws.amazon.com/`, '_blank')}
                 className="h-auto w-auto max-h-[43px] m-1 rounded-lg cursor-pointer" />
+            </p> */}
+            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+              <MdCable className="text-blue-500 mr-1" /> Future Feature
             </p>
 
           </div>
 
           <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
             <p className="text-sm text-gray-600">Credentials</p>
-            <p className="text-base font-medium text-navy-700 dark:text-white">
-              Application Credentials: ✅
+            <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
+              <MdCable className="text-blue-500 mr-1" /> Future Feature
             </p>
             {/* <p className="text-base font-medium text-navy-700 dark:text-white">
               Cloud Credentials: ✅ ❌

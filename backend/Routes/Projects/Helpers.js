@@ -4,6 +4,7 @@ const Errors = require('../../ErrorHandling/Errors');
 const fetch = require('npm-registry-fetch');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const logger = require('@ofrepose/logtastic');
 
 /**
  * A utility class that provides various helper methods for working with projects, libraries, and package information.
@@ -131,6 +132,7 @@ class Helpers {
             const description = packageInfo.description || null;
             const repoUrl = packageInfo.repository?.url || null;
             const documentation = packageInfo.homepage || packageInfo.repository && packageInfo.repository.url || null;
+            // console.log(Object.keys(packageInfo))
             return { latestVersion, description, repoUrl, documentation }
 
         } catch (error) {
@@ -147,13 +149,18 @@ class Helpers {
      */
     async getAllUsersProjectsAndUpdatePackagesList(userId) {
         const projects = await this.getCurrentUserProjects(userId);
-        if(projects.length > 0){
-            await Promise.all(projects.forEach(async (project) => {
+        if (projects.length > 0) {
+            await Promise.allSettled(projects.forEach(async (project) => {
 
                 await this.updatePackagesList(project);
                 await project.save()
             })).catch((err) => {
-                console.log(err)
+                logger.warn(err, {
+                    time: true,
+                    override: true,
+                    trace: true,
+                    escape: false
+                });
             });
         }
     }

@@ -1,5 +1,5 @@
 import Card from "components/card";
-import { MdCheckCircle, MdUnfoldMore, MdUnfoldLess } from "react-icons/md";
+import { MdCheckCircle, MdUnfoldMore, MdUnfoldLess, MdTextSnippet } from "react-icons/md";
 import React, { useState } from "react";
 
 const DevelopmentTable = (props) => {
@@ -87,7 +87,8 @@ const DevelopmentTable = (props) => {
                         <span className="flex">
                           <a className={`text-sm font-bold text-navy-700 dark:text-white bg-black text-center pl-2`} href={row[column.accessor]} target="_blank"
                             rel="noopener noreferrer" >
-                            📖
+                            {/* 📖 */}
+                            <MdTextSnippet className="text-white-500 text-lg" />
                           </a>
                           <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
                             <img

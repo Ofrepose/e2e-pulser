@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const path = require('path');
+const logger = require('@ofrepose/logtastic');
 
 const User = require('../../Models/Users');
 
@@ -36,18 +37,27 @@ router.get('/', auth, async (req, res) => {
         if (!thisUser) {
             return res.status(404).json({ msg: 'User not found' });
         };
+        await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
 
         let currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(thisUser.id);
 
         currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(thisUser.id);
         const currentUserComplete = { ...thisUser._doc, currentUserProjects }
-
         res.send(currentUserComplete);
     } catch (err) {
         if (err.kind === 'ObjectId') {
             return res.status(400).json({ msg: 'Unauthorized - err' });
         }
-        console.log(err)
+        // console.log(err)
+        logger.err(err, {
+            color: 'red', // optional else default values are used
+            style: 'bold', // optional else default values are used
+            bgStyle: 'white', // optional else default values are used
+            time: true, // optional
+            override: true, // optional
+            trace: true, // optional
+            escape: false // optional
+        });
         res.status(500).send('Server Error');
     }
 
