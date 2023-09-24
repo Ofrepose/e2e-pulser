@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import Card from "components/card";
 import { MdCheckCircle, MdAddCircleOutline, MdArrowBack } from "react-icons/md";
-import { useMemo } from "react";
 import Progress from "components/progress";
 import AddApp from 'views/admin/apps/forms/AddApp';
 import { useTestProvider } from 'contexts/tests/TestContext';
 
 const ComplexTable = (props) => {
   const { columnsData, tableData, setActiveProject, setActiveProjectId } = props;
-
-  const columns = useMemo(() => columnsData, [columnsData]);
-
   const [cardState, setCardState] = useState('default');
   const { clearInfo } = useTestProvider();
+  const columns = columnsData;
 
   return (
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
@@ -26,7 +23,6 @@ const ComplexTable = (props) => {
                 </div>
                 <MdAddCircleOutline onClick={() => setCardState('add')} className="text-blue-500 mr-4 text-2xl cursor-pointer" />
               </div>
-
               <div className="mt-8 overflow-x-scroll xl:overflow-hidden">
                 <table className="w-full">
                   <thead>
@@ -43,7 +39,6 @@ const ComplexTable = (props) => {
                   </thead>
                   <tbody>
                     {tableData.map((row, rowIndex) => (
-
                       <tr
                         key={rowIndex}
                         onClick={() => {

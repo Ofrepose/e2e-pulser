@@ -10,11 +10,14 @@ import General from '../profile/components/General';
 import TestingTable from '../tables/components/TestingTable';
 import HistoryCard from '../tables/components/HistoryCard';
 
+import useFetchUser from 'hooks/useFetchUser';
+
 const Dashboard = () => {
   const { user, isLoading, getUser } = useAuth();
   const [activeProject, setActiveProject] = useState(null);
   const [activeProjectId, setActiveProjectId] = useState(null);
   const [activeTestInfo, setActiveTestInfo] = useState(null);
+  useFetchUser();
 
   function handleInfo(testName) {
     const active = user?.currentUserProjects[activeProject].tests;
@@ -25,41 +28,32 @@ const Dashboard = () => {
     setActiveTestInfo(() => null);
   }
 
-  useEffect(() => {
-    getUser();
-  }, [])
-
   return (
-    isLoading ? <div></div>
+    isLoading ? ''
       :
       <div>
-
-        {activeTestInfo && <>
-          <div className="fixed inset-0 z-40 backdrop-blur-sm backdrop-opacity-70">
-            {/* Backdrop with blur effect */}
-          </div>
-          <div className="fixed center right-0 z-50 px-4 flex items-center justify-center overflow-auto">
-            <HistoryCard
-              closeInfo={closeInfo}
-              runs={activeTestInfo?.runs.sort((a, b) => {
-                const timeA = new Date(a.runTime).getTime();
-                const timeB = new Date(b.runTime).getTime();
-                return timeB - timeA;
-              }).slice(0, 5)}
-              title={`Log: ${activeTestInfo.name}`}
-              highlight={`${activeTestInfo?.runs?.length ? `This test has been run ${activeTestInfo?.runs?.length} time${activeTestInfo?.runs?.length === 1 ? '' : 's'}. 
+        {activeTestInfo &&
+          <>
+            <div className="fixed inset-0 z-40 backdrop-blur-sm backdrop-opacity-70">
+              {/* Backdrop with blur effect */}
+            </div>
+            <div className="fixed center right-0 z-50 px-4 flex items-center justify-center overflow-auto">
+              <HistoryCard
+                closeInfo={closeInfo}
+                runs={activeTestInfo?.runs.sort((a, b) => {
+                  const timeA = new Date(a.runTime).getTime();
+                  const timeB = new Date(b.runTime).getTime();
+                  return timeB - timeA;
+                }).slice(0, 5)}
+                title={`Log: ${activeTestInfo.name}`}
+                highlight={`${activeTestInfo?.runs?.length ? `This test has been run ${activeTestInfo?.runs?.length} time${activeTestInfo?.runs?.length === 1 ? '' : 's'}. 
             It has passed ${activeTestInfo?.runs.reduce((acc, curr) => curr?.passed ? acc + 1 : acc, 0)} times and failed 
             ${activeTestInfo?.runs.reduce((acc, curr) => !curr?.passed ? acc + 1 : acc, 0)} times` :
-                'has not been run'}.`}
-
-            />
-          </div>
-        </>}
-        {/* Card widget */}
-
-        <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6">
-
-        </div>
+                  'has not been run'}.`}
+              />
+            </div>
+          </>
+        }
 
         <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-1">
 
@@ -188,10 +182,6 @@ const Dashboard = () => {
 
           ) : ''
           }
-
-          <div className="grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-2">
-
-          </div>
         </div>
       </div>
   );

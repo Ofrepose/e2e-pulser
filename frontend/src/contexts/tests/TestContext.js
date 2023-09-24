@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useAuth } from '../user/AuthContext';
 import { useProject } from 'contexts/projects/ProjectContext';
-import Logtastic from '@ofrepose/logtastic';
+import Logtastic, { log } from '@ofrepose/logtastic';
+import logtastic from '@ofrepose/logtastic';
 
 const TestContext = createContext();
 
@@ -68,7 +69,7 @@ export function TestProvider({ children }) {
   const runSingle = async (testData) => {
     clearInfo();
     await runTest(testData);
-    await updateProjects();
+    // await updateProjects();
   }
 
   const runTest = async (testData) => {
@@ -123,6 +124,7 @@ export function TestProvider({ children }) {
       setStatus("Failure");
     } finally {
       setIsTesting((prevIsTesting) => prevIsTesting.filter((item) => item !== testData.testName));
+      logtastic.log(projects)
       if (data?.errors) {
         setStatus("Failure");
       } else {
@@ -147,6 +149,7 @@ export function TestProvider({ children }) {
         status,
         isTesting,
         info,
+        projects
       }}
     >
       {children}
