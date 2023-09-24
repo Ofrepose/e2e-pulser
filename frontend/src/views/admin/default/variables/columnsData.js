@@ -8,12 +8,12 @@ export const columnsDataDevelopment = [
     accessor: "description",
   },
   {
-    Header: "VERSION",
+    Header: "VERSION | LATEST",
     accessor: "version",
   },
   {
-    Header: "LATEST VERSION",
-    accessor: "latestVersion",
+    Header: "LICENSE",
+    accessor: "license",
   },
   {
     Header: "DOCS",

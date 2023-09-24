@@ -132,8 +132,9 @@ class Helpers {
             const description = packageInfo.description || null;
             const repoUrl = packageInfo.repository?.url || null;
             const documentation = packageInfo.homepage || packageInfo.repository && packageInfo.repository.url || null;
+            const license = packageInfo.license || null;
             // console.log(Object.keys(packageInfo))
-            return { latestVersion, description, repoUrl, documentation }
+            return { latestVersion, description, repoUrl, documentation, license }
 
         } catch (error) {
             console.error('Error fetching package information:', error);
@@ -172,7 +173,8 @@ class Helpers {
      * @returns {Promise<Object>} A promise that resolves to the updated project object.
      */
     async updatePackagesList(project) {
-        const newUpdates = await Promise.all(project.updates.map(async ({ name, version } = item) => {
+        console.log(project);
+        const newUpdates = await Promise.all(project.updates.map(async ({ name, version }) => {
             const packageInfo = await this.getLibraryInfo(name);
 
             return {
@@ -183,9 +185,11 @@ class Helpers {
                 description: packageInfo?.description || null,
                 repoUrl: packageInfo?.repoUrl || null,
                 documentation: packageInfo?.documentation || null,
+                license: packageInfo.license,
                 // logo: logo || null
             };
         }));
+        console.log(newUpdates);
         project.updates = newUpdates;
         await project.save()
         return project;

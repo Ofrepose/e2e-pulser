@@ -11,6 +11,7 @@ import TestingTable from '../tables/components/TestingTable';
 import HistoryCard from '../tables/components/HistoryCard';
 
 import useFetchUser from 'hooks/useFetchUser';
+import { useHandleKeyPress } from 'hooks/useHandleKeyPress';
 
 const Dashboard = () => {
   const { user, isLoading, getUser } = useAuth();
@@ -18,6 +19,29 @@ const Dashboard = () => {
   const [activeProjectId, setActiveProjectId] = useState(null);
   const [activeTestInfo, setActiveTestInfo] = useState(null);
   useFetchUser();
+  const [filterText, setFilterText] = useState("");
+  const [tableDataFiltered, setTableDataFiltered] = useState(user?.currentUserProjects?.[activeProject]?.updates || []);
+  const [searchOpen, setSearchOpen] = useHandleKeyPress();
+
+  // Filter tableData based on the filterText
+  const filteredTableData = user?.currentUserProjects?.[activeProject]?.updates.filter((row) =>
+    row.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  React.useEffect(() => {
+    setTableDataFiltered(filteredTableData)
+  }, [filterText])
+
+  React.useEffect(() => {
+    setTableDataFiltered(filteredTableData)
+  }, [activeProject])
+
+  React.useEffect(() => {
+    if (!searchOpen) {
+      setFilterText("")
+    }
+  }, [searchOpen])
+
 
   function handleInfo(testName) {
     const active = user?.currentUserProjects[activeProject].tests;
@@ -76,7 +100,7 @@ const Dashboard = () => {
 
 
 
-          {activeProject !== null && !isLoading ? (
+          {activeProject !== null && tableDataFiltered && !isLoading ? (
             <>
               <General
                 projectName={user?.currentUserProjects[activeProject].projectName}
@@ -136,37 +160,59 @@ const Dashboard = () => {
                 })}
               />
 
-              <DevelopmentTable
-                projectName={user?.currentUserProjects[activeProject].projectName}
-                dataTitle="Dependencies"
-                columnsData={columnsDataDevelopment}
-                setActiveProject={setActiveProject}
-                raw={user?.currentUserProjects[activeProject].updates}
-                tableData={user?.currentUserProjects[activeProject].updates.filter(item => !item.dev).map((item) => {
-                  return {
-                    name: item?.name,
-                    version: item?.version,
-                    latestVersion: item?.updatedVersion?.slice(0, 10),
-                    update: item?.updateAvailable,
-                    description: item?.description,
-                    docs: item?.documentation,
-                    repo: item?.repoUrl,
-                    logo: item?.logo
-                  }
-                })}
-              />
+              {searchOpen && (
+                <div className="fixed top left-0 w-full h-full flex items-start justify-center z-50">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Search dependencies by name"
+                      value={filterText}
+                      onChange={(e) => setFilterText(e.target.value)}
+                      id='search'
+                      className="border border-white/10 p-4 rounded px-2 py-2 text-2xl items-center justify-between rounded-xl bg-white/10 p-2 text-white min-w-[400px] width-full"
+                    />
+                    <span className='pl-2 cursor-pointer text-xl' onClick={() => setSearchOpen(false)}>
+                      🙅
+                    </span>
+                  </div>
+                </div>
+              )}
+              {tableDataFiltered && (
+                <DevelopmentTable
+                  projectName={user?.currentUserProjects[activeProject].projectName}
+                  dataTitle="Dependencies"
+                  columnsData={columnsDataDevelopment}
+                  setActiveProject={setActiveProject}
+                  raw={tableDataFiltered}
+                  tableData={tableDataFiltered && tableDataFiltered?.filter(item => !item.dev).map((item) => {
+                    return {
+                      name: item?.name,
+                      version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
+                      latestVersion: item?.updatedVersion?.slice(0, 10),
+                      license: item.license,
+                      update: item?.updateAvailable,
+                      description: item?.description,
+                      docs: item?.documentation,
+                      repo: item?.repoUrl,
+                      logo: item?.logo
+                    }
+                  })}
+                />
+              )}
+
 
               <DevelopmentTable
                 projectName={user?.currentUserProjects[activeProject].projectName}
                 dataTitle="Dev Dependencies"
                 columnsData={columnsDataDevelopment}
                 setActiveProject={setActiveProject}
-                raw={user?.currentUserProjects[activeProject].updates}
-                tableData={user?.currentUserProjects[activeProject].updates.filter(item => item.dev).map((item) => {
+                raw={tableDataFiltered}
+                tableData={tableDataFiltered && tableDataFiltered?.filter(item => item.dev).map((item) => {
                   return {
                     name: item?.name,
-                    version: item?.version,
+                    version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
                     latestVersion: item?.updatedVersion?.slice(0, 10),
+                    license: item.license,
                     update: item?.updateAvailable,
                     description: item?.description,
                     docs: item?.documentation,

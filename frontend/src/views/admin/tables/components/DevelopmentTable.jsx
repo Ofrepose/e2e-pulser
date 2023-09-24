@@ -6,33 +6,21 @@ const DevelopmentTable = (props) => {
   const { columnsData, tableData, raw } = props;
   const [windowOpts, setWindowOpts] = useState(true)
 
+
   return (
     <Card extra={"w-full h-full p-4"}>
       <div className="relative flex items-center justify-between px-2">
-        <div className="text-xl font-bold text-navy-700 dark:text-white" onClick={() => setWindowOpts((prev) => !prev)}>
-          {props?.dataTitle}  <span className="text-sm text-gray-600">({tableData.length})</span>
-          {raw?.map((item) => {
-            if (item?.logo) {
-              return (<p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
-                <img
-                  src={item.logo}
-                  onClick={() => window.open(`https://docs.digitalocean.com/`, '_blank')}
-                  className="h-auto w-auto max-h-[13px] m-1 rounded-lg cursor-pointer" />
-                {/* <img
-                  src={item.logo}
-                  onClick={() => window.open(`https://docs.aws.amazon.com/`, '_blank')}
-                  className="h-auto w-auto max-h-[43px] m-1 rounded-lg cursor-pointer" /> */}
-              </p>)
-            }
-          })}
+        <div className="text-xl font-bold text-navy-700 dark:text-white w-full" onClick={() => setWindowOpts((prev) => !prev)}>
+          <div className="flex wrap justify-between items-center">
+            <span>{props?.dataTitle}  <span className="text-sm text-gray-600">({tableData.length})</span></span>
+            <span className="text-sm italic text-gray-300">Seach deps by using ctrl+shift+s</span>
+            <button className={`rounded-full text-xl`}  >
+              <p className="text-2xl font-bold text-blue-500 dark:text-blue-500">
+                <span onClick={() => setWindowOpts((prev) => !prev)}>{!windowOpts ? <MdUnfoldMore className="text-blue-500 mr-4" /> : <MdUnfoldLess className="text-blue-500 mr-4" />}</span>
+              </p>
+            </button>
+          </div>
         </div>
-        <button className={`rounded-full text-xl`}  >
-          <p className="text-2xl font-bold text-blue-500 dark:text-blue-500">
-            <span onClick={() => setWindowOpts((prev) => !prev)}>{!windowOpts ? <MdUnfoldMore className="text-blue-500 mr-4" /> : <MdUnfoldLess className="text-blue-500 mr-4" />}</span>
-
-          </p>
-        </button>
-
       </div>
 
       <div className={`h-full overflow-x-scroll xl:overflow-x-hidden ${!windowOpts ? 'hidden' : ''}`}>

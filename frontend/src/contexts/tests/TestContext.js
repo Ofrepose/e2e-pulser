@@ -69,7 +69,7 @@ export function TestProvider({ children }) {
   const runSingle = async (testData) => {
     clearInfo();
     await runTest(testData);
-    // await updateProjects();
+    await updateProjects();
   }
 
   const runTest = async (testData) => {

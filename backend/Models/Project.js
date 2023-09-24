@@ -51,6 +51,9 @@ const ProjectSchema = new mongoose.Schema({
       logo: {
         type: String,
       },
+      license:{
+        type: String,
+      },
       dev: {
         type: Boolean,
         default: false
