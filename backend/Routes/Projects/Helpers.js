@@ -173,23 +173,24 @@ class Helpers {
      * @returns {Promise<Object>} A promise that resolves to the updated project object.
      */
     async updatePackagesList(project) {
-        console.log(project);
-        const newUpdates = await Promise.all(project.updates.map(async ({ name, version }) => {
-            const packageInfo = await this.getLibraryInfo(name);
+        const depends = project.json?.dependencies && Object.keys(project.json?.dependencies) || [];
+        const devDepends = project.json?.devDependencies && Object.keys(project.json?.devDependencies) || [];
+        const newUpdates = await Promise.all([...depends, ...devDepends].map(async (item) => {
+            const packageInfo = await this.getLibraryInfo(item);
+            const currentJson = project.json?.dependencies?.[item] ?? project.json?.devDependencies?.[item];
 
             return {
-                name: name,
-                version: version,
+                name: item,
+                version: currentJson.replace(/\^/g, ''),
                 updatedVersion: packageInfo?.latestVersion || null,
-                updateAvailable: version !== packageInfo?.latestVersion || null,
+                updateAvailable: currentJson.replace(/\^/g, '') !== packageInfo?.latestVersion,
                 description: packageInfo?.description || null,
                 repoUrl: packageInfo?.repoUrl || null,
                 documentation: packageInfo?.documentation || null,
+                dev: !!project.json?.devDependencies?.[item],
                 license: packageInfo.license,
-                // logo: logo || null
             };
         }));
-        console.log(newUpdates);
         project.updates = newUpdates;
         await project.save()
         return project;

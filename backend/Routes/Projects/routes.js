@@ -72,7 +72,8 @@ router.post('/add', auth,
                     description: packageInfo?.description || null,
                     repoUrl: packageInfo?.repoUrl || null,
                     documentation: packageInfo?.documentation || null,
-                    dev: !!json?.devDependencies?.[item]
+                    dev: !!json?.devDependencies?.[item],
+                    license: packageInfo.license,
                 };
             }));
             newProject = Main.Routes.Projects.Helpers.createNewProject({ projectName, tech, url, json, userId, updates });

@@ -11,7 +11,7 @@ import TestingTable from '../tables/components/TestingTable';
 import HistoryCard from '../tables/components/HistoryCard';
 
 import useFetchUser from 'hooks/useFetchUser';
-import { useHandleKeyPress } from 'hooks/useHandleKeyPress';
+import { useSearchToggle } from 'hooks/useSearchToggle';
 
 const Dashboard = () => {
   const { user, isLoading, getUser } = useAuth();
@@ -21,11 +21,11 @@ const Dashboard = () => {
   useFetchUser();
   const [filterText, setFilterText] = useState("");
   const [tableDataFiltered, setTableDataFiltered] = useState(user?.currentUserProjects?.[activeProject]?.updates || []);
-  const [searchOpen, setSearchOpen] = useHandleKeyPress();
+  const [searchOpen, setSearchOpen] = useSearchToggle();
 
   // Filter tableData based on the filterText
   const filteredTableData = user?.currentUserProjects?.[activeProject]?.updates.filter((row) =>
-    row.name.toLowerCase().includes(filterText.toLowerCase())
+    row.name.toLowerCase().includes(filterText.toLowerCase()) || row.description.toLowerCase().includes(filterText.toLowerCase())
   );
 
   React.useEffect(() => {
@@ -161,14 +161,18 @@ const Dashboard = () => {
               />
 
               {searchOpen && (
-                <div className="fixed top left-0 w-full h-full flex items-start justify-center z-50">
+                <div className="fixed top left-0 w-full flex items-start justify-center z-50">
                   <div>
+                    <span className='pr-2 cursor-pointer text-xl' onClick={() => setFilterText('')}>
+                      🚮
+                    </span>
                     <input
                       type="text"
                       placeholder="Search dependencies by name"
                       value={filterText}
                       onChange={(e) => setFilterText(e.target.value)}
                       id='search'
+                      autoFocus={true}
                       className="border border-white/10 p-4 rounded px-2 py-2 text-2xl items-center justify-between rounded-xl bg-white/10 p-2 text-white min-w-[400px] width-full"
                     />
                     <span className='pl-2 cursor-pointer text-xl' onClick={() => setSearchOpen(false)}>

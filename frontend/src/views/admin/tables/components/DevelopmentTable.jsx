@@ -10,7 +10,7 @@ const DevelopmentTable = (props) => {
   return (
     <Card extra={"w-full h-full p-4"}>
       <div className="relative flex items-center justify-between px-2">
-        <div className="text-xl font-bold text-navy-700 dark:text-white w-full" onClick={() => setWindowOpts((prev) => !prev)}>
+        <div className="text-xl font-bold text-navy-700 dark:text-white w-full">
           <div className="flex wrap justify-between items-center">
             <span>{props?.dataTitle}  <span className="text-sm text-gray-600">({tableData.length})</span></span>
             <span className="text-sm italic text-gray-300">Seach deps by using ctrl+shift+s</span>
