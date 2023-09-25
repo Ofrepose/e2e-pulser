@@ -33,52 +33,63 @@ router.delete('/delete', auth,
     })
 
 
-router.post('/edit', auth,
+router.post(
+    '/edit',
+    auth,
     [
         check('projectName', 'Project Name is Required').not().isEmpty(),
         check('json', 'JSON file is Required').not().isEmpty(),
-        check('user', 'Make sure you are signed in').not().isEmpty()
-    ], async (req, res) => {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        const currentUser = await Main.Routes.Users.Helpers.getUser(req.body.user.id);
-        let {
-            projectName, tech, url, json, projectId,
-        } = req.body;
-        let jsonLocation;
-
-        const currentProject = await Main.Routes.Projects.Helpers.getProject(projectId, currentUser.id);
-
-        if (!currentProject) {
-            return res.status(400).json({ errors: [{ msg: 'Project not found' }] });
-        }
-        // if url to raw json given - grab it using axios.
-        if (typeof json === 'string' && json.startsWith('http')) {
-            jsonLocation = json;
-            try {
-                const response = await axios.get(json);
-                json = response.data;
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            jsonLocation = 'file';
-        }
-        const userId = currentUser.id;
+        check('user', 'Make sure you are signed in').not().isEmpty(),
+    ],
+    async (req, res) => {
         try {
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            const { id: userId } = req.body.user;
+            const {
+                projectName,
+                tech,
+                url,
+                json,
+                projectId,
+            } = req.body;
+            let jsonLocation = 'file';
+
+            const currentUser = await Main.Routes.Users.Helpers.getUser(userId);
+            const currentProject = await Main.Routes.Projects.Helpers.getProject(projectId, userId);
+
+            if (!currentProject) {
+                return res.status(400).json({ errors: [{ msg: 'Project not found' }] });
+            }
+
+            // Check if a URL to raw JSON is given and fetch it using axios
+            if (typeof json === 'string' && json.startsWith('http')) {
+                jsonLocation = json;
+
+                try {
+                    const response = await axios.get(json);
+                    json = response.data;
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
             if (!json?.dependencies && !json.devDependencies) {
                 return res.status(400).json({ errors: [{ msg: 'No dependencies found in json' }] });
             }
-            json.jsonLocation = jsonLocation;
-            const depends = json?.dependencies && Object.keys(json?.dependencies) || [];
-            const devDepends = json?.devDependencies && Object.keys(json?.devDependencies) || [];
+
+            // Extract dependencies and devDependencies
+            const depends = json?.dependencies ? Object.keys(json.dependencies) : [];
+            const devDepends = json?.devDependencies ? Object.keys(json.devDependencies) : [];
+
+            // Fetch information for each library in parallel
             const updates = await Promise.all([...depends, ...devDepends].map(async (item) => {
                 const packageInfo = await Main.Routes.Projects.Helpers.getLibraryInfo(item);
-                const currentJson = json?.dependencies?.[item] ?? json?.devDependencies?.[item];
+                const currentJson = json.dependencies?.[item] || json.devDependencies?.[item];
                 return {
                     name: item,
                     version: currentJson.replace(/\^/g, ''),
@@ -87,22 +98,27 @@ router.post('/edit', auth,
                     description: packageInfo?.description || null,
                     repoUrl: packageInfo?.repoUrl || null,
                     documentation: packageInfo?.documentation || null,
-                    dev: !!json?.devDependencies?.[item],
+                    dev: !!json.devDependencies?.[item],
                     license: packageInfo.license,
                 };
             }));
+
+            // Update project information and save it
             currentProject.projectName = projectName || currentProject.projectName;
             currentProject.tech = tech || currentProject.tech;
             currentProject.url = url || currentProject.url;
             currentProject.json = json || currentProject.json;
             currentProject.updates = updates || currentProject.updates;
+
             await currentProject.save();
+
             return res.send(currentProject);
         } catch (err) {
-            console.log(err);
+            console.error(err);
+            res.status(500).json({ errors: [{ msg: 'Internal Server Error' }] });
         }
-
-    })
+    }
+);
 
 /**
  * Handles the creation of a new project.

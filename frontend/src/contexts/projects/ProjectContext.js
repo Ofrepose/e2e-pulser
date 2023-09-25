@@ -52,7 +52,6 @@ export function ProjectProvider({ children }) {
     const editApplication = async (appData) => {
         setStatus(null);
         let data;
-        console.log(appData)
         try {
             setLoading(() => true);
             const response = await fetch(API + 'edit', {
