@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
         if (!thisUser) {
             return res.status(404).json({ msg: 'User not found' });
         };
-        await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
+        // await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
 
         let currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(thisUser.id);
 
@@ -119,7 +119,8 @@ router.post('/',
                 return res.status(400).json({ errors: [{ msg: 'Username and/or password are no good.' }] });
             };
             const currentUser = await User.findOne({ email: email }).select('-password');
-            // await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
+            // this will be moved to a cron job.
+            await Main.Routes.Projects.Helpers.getAllUsersProjectsAndUpdatePackagesList(thisUser.id);
             const currentUserProjects = await Main.Routes.Projects.Helpers.getCurrentUserProjects(currentUser.id);
             const currentUserComplete = { ...currentUser._doc, currentUserProjects }
 

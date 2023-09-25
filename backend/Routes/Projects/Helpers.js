@@ -52,6 +52,10 @@ class Helpers {
         return projects;
     }
 
+    async deleteProject(userId, projectId) {
+        await Project.deleteOne({ userId: userId, _id: projectId });
+      }
+
     /**
      * Checks whether a project with the given name and user ID already exists in the database.
      *

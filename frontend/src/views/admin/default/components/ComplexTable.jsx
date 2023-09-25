@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Card from "components/card";
-import { MdCheckCircle, MdAddCircleOutline, MdArrowBack } from "react-icons/md";
+import { MdCheckCircle, MdAddCircleOutline, MdArrowBack, MdEdit } from "react-icons/md";
 import Progress from "components/progress";
 import AddApp from 'views/admin/apps/forms/AddApp';
 import { useTestProvider } from 'contexts/tests/TestContext';
@@ -8,8 +8,10 @@ import { useTestProvider } from 'contexts/tests/TestContext';
 const ComplexTable = (props) => {
   const { columnsData, tableData, setActiveProject, setActiveProjectId } = props;
   const [cardState, setCardState] = useState('default');
+  const [cardToEdit, setCardToEdit] = useState(null);
   const { clearInfo } = useTestProvider();
   const columns = columnsData;
+  const isEditing = cardState === 'edit';
 
   return (
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
@@ -67,6 +69,18 @@ const ComplexTable = (props) => {
                                 </p>
                               </div>
                             );
+                          } else if (column.Header === "NAME") {
+                            data = (
+                              <div className="flex wrap items-center">
+                                <MdEdit className="mr-1 cursor-pointer" onClick={() => {
+                                  setCardState('edit');
+                                  setCardToEdit(rowIndex)
+                                }} />
+                                <p className="text-navy-700 dark:text-white">
+                                  {data}
+                                </p>
+                              </div>
+                            );
                           } else if (column.Header === "LAST RUN STATUS") {
                             data = (
                               <div className="flex items-center gap-2">
@@ -103,13 +117,21 @@ const ComplexTable = (props) => {
           (<>
             <div className="relative flex items-center justify-between pt-4">
               <div className="text-xl font-bold text-navy-700 dark:text-white">
-                Create Application:
+                {isEditing ? (
+                  <span className='flex wrap'>
+                    Editing App: <p className='pl-2'> {tableData[cardToEdit].name}</p>
+                  </span>
+                ) : 'Create Application'}
               </div>
               <MdArrowBack onClick={() => setCardState('default')} className="text-blue-500 mr-4 text-2xl cursor-pointer" />
 
             </div>
 
-            <AddApp />
+            <AddApp
+              edit={isEditing}
+              data={isEditing && tableData[cardToEdit].rawData || {}}
+              setActiveProject={setActiveProject}
+            />
           </>
           )}
       </>

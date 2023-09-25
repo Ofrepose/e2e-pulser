@@ -11,7 +11,7 @@ const TestingTable = (props) => {
     const [cardState, setCardState] = useState('default');
     const { runSingle, isLoading, isTesting, info, clearInfo, runAll } = useTestProvider();
     const [activeTest, setActiveTest] = useState();
-   
+
 
     return (
         <Card extra={"w-full h-full p-4"}>
@@ -75,67 +75,49 @@ const TestingTable = (props) => {
                                         <tr key={index} className={`pl-2 ${isTesting.includes(row.name) ? 'bg-blue-100 dark:bg-navy-900' : ''}`}>
                                             {columnsData.map((column, columnIndex) => {
                                                 let data = (
-                                                    <p className={`text-sm font-medium text-navy-700 dark:text-white pl-2`}>
+                                                    <p className={`text-navy-700 dark:text-white`}>
                                                         {row[column.accessor]}
                                                     </p>
                                                 );
-                                                if (column.Header === "UPDATE") {
+                                                if (column.Header === "NAME") {
                                                     data = (
-                                                        <div className="flex items-center gap-3">
-                                                            <p className="text-sm font-bold text-navy-700 dark:text-white">
-                                                                {row[column.accessor] ? (
-                                                                    <button>Update</button>
-                                                                ) : (
-                                                                    <MdCheckCircle className="text-green-500" />
-                                                                )}
-                                                            </p>
-                                                        </div>
-                                                    );
-                                                } else if (column.Header === "NAME") {
-                                                    data = (
-                                                        <p className={`text-sm font-medium text-navy-700 dark:text-white pl-2 flex align-center items-center`} >
+                                                        <p className={`text-navy-700 dark:text-white flex align-center items-center`} >
                                                             <>
-                                                           
-                                                                <MdEdit 
-                                                                className="mr-1 cursor-pointer"
-                                                                onClick={() => {
-                                                                    setCardState('add');
-                                                                    setActiveTest({...row.raw, editing: true});
-                                                                }}
+
+                                                                <MdEdit
+                                                                    className="mr-1 cursor-pointer"
+                                                                    onClick={() => {
+                                                                        setCardState('add');
+                                                                        setActiveTest({ ...row.raw, editing: true });
+                                                                    }}
                                                                 />
                                                                 {props.currentProjectTests ? (
-                                                                    <Tooltip 
-                                                                    label={
-                                                                        props.currentProjectTests && `Tests if ${props?.currentProjectTests[index]?.args.targetText} is found on ${props?.currentProjectTests[index]?.args.targetUrl}` || ''
-                                                                    }
+                                                                    <Tooltip
+                                                                        label={
+                                                                            props.currentProjectTests && `Tests if ${props?.currentProjectTests[index]?.args.targetText} is found on ${props?.currentProjectTests[index]?.args.targetUrl}` || ''
+                                                                        }
                                                                     >
                                                                         {row[column.accessor]}
                                                                     </Tooltip>
                                                                 ) : ''}
-                                                                </>
-                                                        </p>
-                                                    );
-                                                } else if (column.Header === "DESCRIPTION") {
-                                                    data = (
-                                                        <p className={`text-sm font-bold text-navy-700 dark:text-white bg-black`} >
-                                                            {row[column.accessor]?.startsWith('<') ? '' : row[column.accessor]}
+                                                            </>
                                                         </p>
                                                     );
                                                 } else if (column.Header === "LAST RUN") {
                                                     data = (
-                                                        <p className={`text-sm font-bold text-navy-700 dark:text-white bg-black items-center align-center flex ${row?.passed ? 
-                                                        'text-green-500 dark:text-green-500' : 
-                                                        'text-red-400 dark:text-red-500'}`} >
-                                                            {row[column.accessor]?.startsWith('Invalid Date') ? 
-                                                            'Never' : 
-                                                            `${row.passed ? '🌕 ' + row[column.accessor] : '💥 ' + row[column.accessor] }`}
+                                                        <p className={`text-sm font-bold text-navy-700 dark:text-white bg-black items-center align-center flex ${row?.passed ?
+                                                            'text-green-500 dark:text-green-500' :
+                                                            'text-red-400 dark:text-red-500'}`} >
+                                                            {row[column.accessor]?.startsWith('Invalid Date') ?
+                                                                'Never' :
+                                                                `${row.passed ? '🌕 ' + row[column.accessor] : '💥 ' + row[column.accessor]}`}
                                                             <span className="cursor-pointer ml-1 items-center align-center" onClick={() => props.handleInfo(row.name)}>📖 </span>
                                                         </p>
                                                     );
                                                 }
                                                 else if (column.Header === "RUN") {
                                                     data = (
-                                                        row[column.accessor] ? (<a className={`text-lg font-bold text-navy-700 dark:text-white bg-black text-center pl-2 cursor-pointer`}
+                                                        row[column.accessor] ? (<a className={`text-lg font-bold text-navy-700 dark:text-white bg-black text-center cursor-pointer`}
                                                             onClick={() => runSingle({ projectId: activeProjectId, testName: row.name })}
                                                         >
                                                             {isTesting.includes(row.name) ? '👨‍🚀' : '🚀'}
@@ -191,11 +173,11 @@ const TestingTable = (props) => {
                                 <div className="text-xl font-bold text-navy-700 dark:text-white">
                                     Add Test:
                                 </div>
-                                <MdArrowBack 
-                                onClick={()=>{
-                                    setCardState('default')
-                                    setActiveTest({});
-                                }} className="text-blue-500 mr-4 text-2xl cursor-pointer" />
+                                <MdArrowBack
+                                    onClick={() => {
+                                        setCardState('default')
+                                        setActiveTest({});
+                                    }} className="text-blue-500 mr-4 text-2xl cursor-pointer" />
 
                             </div>
                             <AddTest

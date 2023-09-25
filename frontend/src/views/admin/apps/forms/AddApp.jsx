@@ -3,17 +3,40 @@ import React, { useState } from 'react';
 import InputField from "components/fields/InputField";
 import { useProject } from '../../../../contexts/projects/ProjectContext';
 
-export default function AddApp() {
-  const { addApplication, isLoading, status } = useProject();
-  const [formData, setFormData] = useState({
-    projectName: '',
-    tech: 'React|Node',
-    url: '',
-    json: '',
-    git: '',
-  });
+// TODO: these forms could probably use YUP or some other form validator.
+
+export default function AddApp({ edit, data, setActiveProject }) {
+  const { addApplication, editApplication, isLoading, status, deleteApplication } = useProject();
+  const isEditing = edit;
+  const [formError, setFormError] = useState({})
+  const [deletePrompt, setDeletePrompt] = useState('💣 Delete 💥')
+  const [formData, setFormData] = useState(isEditing ?
+    {
+      projectName: data.projectName,
+      tech: 'React|Node',
+      url: data?.url,
+      json: data?.json,
+      git: data?.json?.jsonLocation !== 'file' ? data.json.jsonLocation : '',
+      projectId: data._id,
+    }
+    :
+    {
+      projectName: '',
+      tech: 'React|Node',
+      url: '',
+      json: '',
+      git: '',
+    }
+  );
 
 
+  const handleDelete = async (e) => {
+    setActiveProject(() => null);
+    deleteApplication({ projectId: data._id });
+  }
+
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.json) {
@@ -21,7 +44,11 @@ export default function AddApp() {
     }
     setFormData((prev) => prev);
     if (formData.json) {
-      addApplication(formData);
+      if (!isEditing) {
+        addApplication(formData);
+      } else {
+        editApplication(formData);
+      }
     }
 
   };
@@ -37,9 +64,14 @@ export default function AddApp() {
           setFormData({ ...formData, json: parsedContent })
         } catch (error) {
           console.error('Error parsing JSON:', error);
+          setFormError((prev) => ({ ...prev, json: 'Error parsing JSON' }))
         }
       };
       reader.readAsText(selectedFile);
+      setFormError((prev) => {
+        const { json, ...rest } = prev;
+        return rest;
+      })
     }
   }
 
@@ -96,7 +128,7 @@ export default function AddApp() {
         {/* json */}
         <InputField
           variant="auth"
-          extra="mb-3"
+          extra={formError.json ? 'mb-1' : 'mb-2'}
           label="Package.json*"
           placeholder="🍔 Gimme"
           id="package"
@@ -104,6 +136,9 @@ export default function AddApp() {
           accepts=".json"
           onChange={handleFileChange}
         />
+        {formError.json && (
+          <div className='text-red-600 text-bold ml-1'>{formError.json}</div>
+        )}
         <InputField
           variant="auth"
           extra="mb-3"
@@ -119,20 +154,36 @@ export default function AddApp() {
           Your choice, really make this decision your own.
         </p>
 
-        <button
-          className={`linear mt-10 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200 ${isLoading === true
+        {isEditing && (
+          <button
+            className={`linear mt-10 w-full rounded-xl bg-red-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-red-600 active:bg-red-400 dark:bg-red-500 dark:text-white dark:hover:bg-red-400 dark:active:bg-brand-200 ${isLoading === true
               ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
               : "border-gray-200 dark:!border-white/10 dark:text-white"
+              }`}
+            disabled={isLoading}
+            type='button'
+            onClick={() => {
+              deletePrompt === '💣 Delete 💥' ? setDeletePrompt(() => 'You sure you want to delete this application?') : handleDelete()
+            }}
+          >
+            {deletePrompt}
+          </button>
+        )}
+
+        <button
+          className={`linear mt-4 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200 ${isLoading || Object.keys(formError).length
+            ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
+            : "border-gray-200 dark:!border-white/10 dark:text-white"
             }`}
-          disabled={isLoading}
+          disabled={isLoading || Object.keys(formError).length}
         >
-          Add Your App Already
+          {isEditing ? 'So let it be rewritten' : 'So let it be written'}
         </button>
 
         {/* Success or Failure Message */}
         {status === "Success" ? (
           <div className="text-xl font-bold text-green-700 dark:text-green mt-2">
-            
+
           </div>
         ) : status === "Failure" ? (
           <div className="text-xl font-bold text-red-700 dark:text-red mt-2">
