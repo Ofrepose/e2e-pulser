@@ -2,7 +2,8 @@
 
 E2E Pulser is a versatile tool designed to streamline the management of your project's dependencies, keep you informed about outdated packages, and ensure the functionality of your application through end-to-end (E2E) testing. With the ability to integrate seamlessly with your project's `package.json` file, this application simplifies the process of staying up-to-date, maintaining reliable user journeys, and addressing potential issues.
 
-[<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif)
+<!-- [<img src="https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif">](https://github.com/Ofrepose/Ofrepose/blob/master/imgs/screenshots.gif) -->
+[![e2e-Pulser Preview](https://res.cloudinary.com/marcomontalbano/image/upload/v1695762177/video_to_markdown/images/youtube--Q9KXdk1hYkg-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/Q9KXdk1hYkg "e2e-Pulser Preview")
 
 ## Features
 
