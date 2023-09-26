@@ -20,6 +20,7 @@ const ProjectSchema = new mongoose.Schema({
   },
   json: {},
   libraries: [],
+  conflicts: [],
   updates: [
     {
       name: {
@@ -57,6 +58,10 @@ const ProjectSchema = new mongoose.Schema({
       dev: {
         type: Boolean,
         default: false
+      },
+      peer: {
+        type: Boolean,
+        default: false,
       }
 
     }

@@ -349,7 +349,7 @@ export default function AddTest(props) {
                                         id="test"
                                         name="test"
                                         formid={item.formFieldId}
-                                        className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border border-color:black bg-white/0 p-3 text-sm outline-none"
+                                        className="mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none text-gray-600"
                                         value={formData.data.customAttributes[formData.data.customAttributes.findIndex(i => i.formFieldId === item.formFieldId)]?.identifierKey}
                                         onChange={(e) => handleIdentifierSelect(item.formFieldId, e)}
                                         color="black"

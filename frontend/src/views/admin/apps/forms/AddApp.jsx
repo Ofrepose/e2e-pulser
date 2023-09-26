@@ -36,22 +36,40 @@ export default function AddApp({ edit, data, setActiveProject }) {
   }
 
 
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.json) {
-      setFormData(prevData => ({ ...prevData, json: prevData.git }));
-    }
-    setFormData((prev) => prev);
-    if (formData.json) {
-      if (!isEditing) {
-        addApplication(formData);
+    if (formData.git || formData.json) {
+      const g2g = await gitAddressExists(formData.git);
+      if (g2g) {
+        console.log('rest of app go.')
+        setFormError((prev) => {
+          const { git, ...rest } = prev;
+          return rest;
+        });
+        if (!formData.json) {
+          setFormData(prevData => ({ ...prevData, json: prevData.git }));
+        }
+        setFormData((prev) => prev);
+        if (formData.json) {
+          if (!isEditing) {
+            addApplication(formData);
+          } else {
+            editApplication(formData);
+          }
+        }
       } else {
-        editApplication(formData);
+        setFormError((prev) => ({ ...prev, git: 'Git Address invalid.' }))
       }
     }
 
+
   };
+
+  const gitAddressExists = async (address) => {
+    const response = await fetch(address);
+    return response.ok;
+  }
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -149,6 +167,9 @@ export default function AddApp({ edit, data, setActiveProject }) {
           value={formData.git}
           onChange={(e) => setFormData({ ...formData, git: e.target.value })}
         />
+        {formError.git && (
+          <div className='text-red-600 text-bold ml-1'>{formError.git}</div>
+        )}
         <p className="mt-2 ml-1 text-base text-gray-600">
           Either the Package.json or the github link is required. <br />
           Your choice, really make this decision your own.
@@ -175,7 +196,7 @@ export default function AddApp({ edit, data, setActiveProject }) {
             ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
             : "border-gray-200 dark:!border-white/10 dark:text-white"
             }`}
-          disabled={isLoading || Object.keys(formError).length}
+          disabled={isLoading}
         >
           {isEditing ? 'So let it be rewritten' : 'So let it be written'}
         </button>

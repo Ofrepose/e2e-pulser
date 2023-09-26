@@ -92,14 +92,14 @@ router.post(
                 const currentJson = json.dependencies?.[item] || json.devDependencies?.[item];
                 return {
                     name: item,
-                    version: currentJson.replace(/\^/g, ''),
+                    version: currentJson?.replace(/\^/g, ''),
                     updatedVersion: packageInfo?.latestVersion || null,
-                    updateAvailable: currentJson.replace(/\^/g, '') !== packageInfo?.latestVersion,
+                    updateAvailable: currentJson?.replace(/\^/g, '') !== packageInfo?.latestVersion,
                     description: packageInfo?.description || null,
                     repoUrl: packageInfo?.repoUrl || null,
                     documentation: packageInfo?.documentation || null,
-                    dev: !!json.devDependencies?.[item],
-                    license: packageInfo.license,
+                    dev: !!json?.devDependencies?.[item],
+                    license: packageInfo?.license || null,
                 };
             }));
 
@@ -174,19 +174,21 @@ router.post('/add', auth,
             json.jsonLocation = jsonLocation;
             const depends = json?.dependencies && Object.keys(json?.dependencies) || [];
             const devDepends = json?.devDependencies && Object.keys(json?.devDependencies) || [];
-            const updates = await Promise.all([...depends, ...devDepends].map(async (item) => {
+            const peerDepends = json?.peerDependencies && Object.keys(json?.peerDependencies) || [];
+            const updates = await Promise.all([...depends, ...devDepends, ...peerDepends].map(async (item) => {
                 const packageInfo = await Main.Routes.Projects.Helpers.getLibraryInfo(item);
-                const currentJson = json?.dependencies?.[item] ?? json?.devDependencies?.[item];
+                const currentJson = json?.dependencies?.[item] ?? json?.devDependencies?.[item] ?? json?.peerDependencies?.[item];
                 return {
                     name: item,
-                    version: currentJson.replace(/\^/g, ''),
+                    version: currentJson?.replace(/\^/g, ''),
                     updatedVersion: packageInfo?.latestVersion || null,
-                    updateAvailable: currentJson.replace(/\^/g, '') !== packageInfo?.latestVersion,
+                    updateAvailable: currentJson?.replace(/\^/g, '') !== packageInfo?.latestVersion,
                     description: packageInfo?.description || null,
                     repoUrl: packageInfo?.repoUrl || null,
                     documentation: packageInfo?.documentation || null,
                     dev: !!json?.devDependencies?.[item],
-                    license: packageInfo.license,
+                    peer: !!json?.peerDependencies?.[item],
+                    license: packageInfo?.license || null,
                 };
             }));
             newProject = Main.Routes.Projects.Helpers.createNewProject({ projectName, tech, url, json, userId, updates });

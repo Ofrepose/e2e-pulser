@@ -18,6 +18,7 @@
     "chalk": "^5.3.0",
     "cheerio": "^1.0.0-rc.12",
     "config": "^3.3.9",
+    "conflictjs": "^1.2.3",
     "cors": "^2.8.5",
     "doctrine": "^3.0.0",
     "dotenv": "^16.3.1",
@@ -29,9 +30,9 @@
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.1",
-    "npm-programmatic": "^0.0.12",
     "npm-registry-fetch": "^16.0.0",
-    "playwright": "^1.37.0"
+    "playwright": "^1.37.0",
+    "semver": "^7.5.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.37.0"

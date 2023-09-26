@@ -12,6 +12,7 @@ import HistoryCard from '../tables/components/HistoryCard';
 
 import useFetchUser from 'hooks/useFetchUser';
 import { useSearchToggle } from 'hooks/useSearchToggle';
+import ForecastTable from '../tables/components/ForecastTable';
 
 const Dashboard = () => {
   const { user, isLoading, getUser } = useAuth();
@@ -24,8 +25,8 @@ const Dashboard = () => {
   const [searchOpen, setSearchOpen] = useSearchToggle();
 
   // Filter tableData based on the filterText
-  const filteredTableData = user?.currentUserProjects?.[activeProject]?.updates.filter((row) =>
-    row.name.toLowerCase().includes(filterText.toLowerCase()) || row.description.toLowerCase().includes(filterText.toLowerCase())
+  const filteredTableData = user?.currentUserProjects?.[activeProject]?.updates?.filter((row) =>
+    row?.name?.toLowerCase().includes(filterText.toLowerCase()) || row?.description?.toLowerCase().includes(filterText.toLowerCase())
   );
 
   React.useEffect(() => {
@@ -51,6 +52,10 @@ const Dashboard = () => {
   function closeInfo() {
     setActiveTestInfo(() => null);
   }
+
+  React.useEffect(() => {
+    console.log(user?.currentUserProjects?.[activeProject]?.conflicts)
+  }, [activeProject])
 
   return (
     isLoading ? ''
@@ -106,6 +111,7 @@ const Dashboard = () => {
                 projectName={user?.currentUserProjects[activeProject].projectName}
                 json={user?.currentUserProjects[activeProject].json}
               />
+
               <TestingTable
                 projectName={user?.currentUserProjects[activeProject].projectName}
                 dataTitle="Tests"
@@ -225,6 +231,64 @@ const Dashboard = () => {
                   }
                 })}
               />
+
+              <DevelopmentTable
+                projectName={user?.currentUserProjects[activeProject].projectName}
+                dataTitle="Peer Dependencies"
+                columnsData={columnsDataDevelopment}
+                setActiveProject={setActiveProject}
+                raw={tableDataFiltered}
+                tableData={tableDataFiltered && tableDataFiltered?.filter(item => item.peer).map((item) => {
+                  return {
+                    name: item?.name,
+                    version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
+                    latestVersion: item?.updatedVersion?.slice(0, 10),
+                    license: item.license,
+                    update: item?.updateAvailable,
+                    description: item?.description,
+                    docs: item?.documentation,
+                    repo: item?.repoUrl,
+                    logo: item?.logo
+                  }
+                })}
+              />
+
+
+              <ForecastTable
+                projectName={user?.currentUserProjects[activeProject].projectName}
+                dataTitle="Conflict Forecaster"
+                columnsData={[
+                  {
+                    Header: "CONFLICTING PACKAGE",
+                    accessor: "item",
+                  },
+                  {
+                    Header: "PACKAGE ONE",
+                    accessor: "packageOne",
+                  },
+                  {
+                    Header: "PACKAGE TWO",
+                    accessor: "packageTwo",
+                  },
+                  {
+                    Header: "MESSAGE",
+                    accessor: "message",
+                  },
+                ]}
+                setActiveProject={setActiveProject}
+                raw={tableDataFiltered}
+                tableData={user?.currentUserProjects?.[activeProject] && user?.currentUserProjects?.[activeProject]?.conflicts?.flat().map((conflicter) => {
+                  return {
+                    item: conflicter?.item,
+                    packageOne: conflicter?.packageOne + conflicter?.packageOneUsing,
+                    // packageOneUsing: conflicter?.packageOneUsing,
+                    packageTwo: conflicter?.packageTwo + conflicter?.packageTwoUsing,
+                    // packageTwoUsing: conflicter?.packageTwoUsing,
+                    message: conflicter?.message,
+                  }
+                })}
+              />
+
 
 
 
