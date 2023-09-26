@@ -210,48 +210,54 @@ const Dashboard = () => {
                 />
               )}
 
+              {tableDataFiltered && tableDataFiltered?.filter(item => item.dev).length > 0 && (
+                <DevelopmentTable
+                  projectName={user?.currentUserProjects[activeProject].projectName}
+                  dataTitle="Dev Dependencies"
+                  columnsData={columnsDataDevelopment}
+                  setActiveProject={setActiveProject}
+                  raw={tableDataFiltered}
+                  tableData={tableDataFiltered && tableDataFiltered?.filter(item => item.dev).map((item) => {
+                    return {
+                      name: item?.name,
+                      version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
+                      latestVersion: item?.updatedVersion?.slice(0, 10),
+                      license: item.license,
+                      update: item?.updateAvailable,
+                      description: item?.description,
+                      docs: item?.documentation,
+                      repo: item?.repoUrl,
+                      logo: item?.logo
+                    }
+                  })}
+                />
+              )}
 
-              <DevelopmentTable
-                projectName={user?.currentUserProjects[activeProject].projectName}
-                dataTitle="Dev Dependencies"
-                columnsData={columnsDataDevelopment}
-                setActiveProject={setActiveProject}
-                raw={tableDataFiltered}
-                tableData={tableDataFiltered && tableDataFiltered?.filter(item => item.dev).map((item) => {
-                  return {
-                    name: item?.name,
-                    version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
-                    latestVersion: item?.updatedVersion?.slice(0, 10),
-                    license: item.license,
-                    update: item?.updateAvailable,
-                    description: item?.description,
-                    docs: item?.documentation,
-                    repo: item?.repoUrl,
-                    logo: item?.logo
-                  }
-                })}
-              />
 
-              <DevelopmentTable
-                projectName={user?.currentUserProjects[activeProject].projectName}
-                dataTitle="Peer Dependencies"
-                columnsData={columnsDataDevelopment}
-                setActiveProject={setActiveProject}
-                raw={tableDataFiltered}
-                tableData={tableDataFiltered && tableDataFiltered?.filter(item => item.peer).map((item) => {
-                  return {
-                    name: item?.name,
-                    version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
-                    latestVersion: item?.updatedVersion?.slice(0, 10),
-                    license: item.license,
-                    update: item?.updateAvailable,
-                    description: item?.description,
-                    docs: item?.documentation,
-                    repo: item?.repoUrl,
-                    logo: item?.logo
-                  }
-                })}
-              />
+
+              {tableDataFiltered?.filter(item => item.peer).length > 0 && (
+                <DevelopmentTable
+                  projectName={user?.currentUserProjects[activeProject].projectName}
+                  dataTitle="Peer Dependencies"
+                  columnsData={columnsDataDevelopment}
+                  setActiveProject={setActiveProject}
+                  raw={tableDataFiltered}
+                  tableData={tableDataFiltered && tableDataFiltered?.filter(item => item.peer).map((item) => {
+                    return {
+                      name: item?.name,
+                      version: `${item?.version} | ${item?.updatedVersion?.slice(0, 10)}`,
+                      latestVersion: item?.updatedVersion?.slice(0, 10),
+                      license: item.license,
+                      update: item?.updateAvailable,
+                      description: item?.description,
+                      docs: item?.documentation,
+                      repo: item?.repoUrl,
+                      logo: item?.logo
+                    }
+                  })}
+                />
+              )}
+
 
 
               <ForecastTable

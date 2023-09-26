@@ -13,12 +13,13 @@ const ForecastTable = (props) => {
         <div className="text-xl font-bold text-navy-700 dark:text-white w-full">
           <div className="flex wrap justify-between items-center">
             <span>{props?.dataTitle}  <span className="text-sm text-gray-600">({tableData.length})</span></span>
-            <span className="text-sm italic text-gray-300">Seach deps by using ctrl+shift+s</span>
+            <span className="text-sm italic text-gray-300">Potential conflicts if you were to update all deps to latest versions</span>
             <button className={`rounded-full text-xl`}  >
               <p className="text-2xl font-bold text-blue-500 dark:text-blue-500">
                 <span onClick={() => setWindowOpts((prev) => !prev)}>{!windowOpts ? <MdUnfoldMore className="text-blue-500 mr-4" /> : <MdUnfoldLess className="text-blue-500 mr-4" />}</span>
               </p>
             </button>
+            
           </div>
         </div>
       </div>
