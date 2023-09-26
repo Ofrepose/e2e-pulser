@@ -1,9 +1,9 @@
 import Card from "components/card";
-import { MdCheckCircle, MdUnfoldMore, MdUnfoldLess, MdTextSnippet } from "react-icons/md";
+import {  MdUnfoldMore, MdUnfoldLess } from "react-icons/md";
 import React, { useState } from "react";
 
 const ForecastTable = (props) => {
-  const { columnsData, tableData, raw } = props;
+  const { columnsData, tableData } = props;
   const [windowOpts, setWindowOpts] = useState(true)
 
 
@@ -45,51 +45,12 @@ const ForecastTable = (props) => {
               <tr key={index}>
                 {columnsData.map((column, columnIndex) => {
                   let data = (
-                    <p className={`text-sm font-bold text-navy-700 dark:text-white bg-black ${row?.latestVersion?.split('.')[0] !== row?.version?.split('.')[0] ? 'text-red-500 dark:text-red-500' : row.update ? 'text-yellow-500 dark:text-yellow-500' : 'text-green-700'} 
+                    <p className={`text-sm font-bold text-navy-700 dark:text-white bg-black'} 
                    
                     `}>
                       {row[column.accessor]}
                     </p>
                   );
-                  if (column.Header === "UPDATE") {
-                    data = (
-                      <div className="flex items-center gap-3">
-                        <p className="text-sm font-bold text-navy-700 dark:text-white">
-                          {row[column.accessor] ? (
-                            <button>Update</button>
-                          ) : (
-                            <MdCheckCircle className="text-green-500" />
-                          )}
-                        </p>
-                      </div>
-                    );
-                  } else if (column.Header === "DESCRIPTION") {
-                    data = (
-                      <p className={`text-sm font-base text-navy-700 dark:text-white bg-black pr-10`} >
-                        {row[column.accessor]?.startsWith('<') ? '' : row[column.accessor]}
-                      </p>
-                    );
-                  }
-                  else if (column.Header === "DOCS") {
-                    data = (
-                      row[column.accessor] ? (
-                        <span className="flex">
-                          <a className={`text-sm font-bold text-navy-700 dark:text-white bg-black text-center pl-2`} href={row[column.accessor]} target="_blank"
-                            rel="noopener noreferrer" >
-                            {/* 📖 */}
-                            <MdTextSnippet className="text-white-500 text-lg" />
-                          </a>
-                          <p className="text-base font-medium text-navy-700 dark:text-white flex items-center">
-                            <img
-                              src={row.logo}
-                              onClick={() => window.open(`https://docs.digitalocean.com/`, '_blank')}
-                              className="h-auto w-auto max-h-[13px] m-1 rounded-lg cursor-pointer" />
-                          </p>
-                        </span>
-                      ) : ''
-
-                    );
-                  }
                   return (
                     <td
                       key={columnIndex}
