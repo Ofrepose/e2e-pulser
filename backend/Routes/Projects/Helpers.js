@@ -190,7 +190,7 @@ class Helpers {
                     dependencyB: packageTwoItem,
                 })) {
                     const conflictMessage = {
-                        message: `conflict with ${item}. ${packageOne.packageName} is using ${thisItem} and ${packageTwo.packageName} is looking for ${packageTwoItem}`,
+                        message: `conflict with ${item}. ${packageOne.packageName} is using ${thisItem} and ${packageTwo.packageName} is using ${packageTwoItem}`,
                         item: item,
                         packageOne: packageOne.packageName,
                         packageOneUsing: thisItem,

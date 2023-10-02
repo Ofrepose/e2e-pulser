@@ -36,7 +36,8 @@ export default function SignIn() {
         |    ___|       |   |___|_____  |    ___|    __  |
         |   |   |       |       |_____| |   |___|   |  | |
         |___|   |_______|_______|_______|_______|___|  |_|
-        
+         Copyright (C) 2023  Daniel Payne
+    This program comes with ABSOLUTELY NO WARRANTY.
         `
       )
     },[])
