@@ -26,6 +26,7 @@ const Navbar = (props) => {
           <a
             className="text-sm font-normal text-navy-700 hover:underline dark:text-white dark:hover:text-white"
             href=" "
+            id='initialRoot'
           >
             Welcome, {user?.firstname}!
           </a>
