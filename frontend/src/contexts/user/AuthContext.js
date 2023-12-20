@@ -5,7 +5,7 @@ import Logtastic from '@ofrepose/logtastic';
 
 const AuthContext = createContext();
 
-const API = 'http://localhost:5001/api/users/';
+const API = 'http://localhost:5005/api/users/';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);

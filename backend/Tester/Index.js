@@ -35,8 +35,8 @@ class Tester {
 
     // can see text on page
     async testTextOnPage({ test, projectId }) {
-        const tester = this.PlayWright;
         try {
+            const tester = this.PlayWright;
             await tester.start(test.args.targetUrl, test.name, projectId);
             await tester.runTest(test.name, async () => {
                 await tester.textExistsOnPage(test.args.targetText);

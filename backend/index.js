@@ -25,7 +25,7 @@ app.use(cors());
 app.use(express.static('screenshots')); // Replace 'public' with the actual directory name
 
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 
 // ROUTES
 const routes = new Routes(app);

@@ -12,15 +12,22 @@ class PlayWright {
   }
 
   async start(url, testName, projectId) {
+    let thisUrl = url;
+    console.log('inside test start');
     this.testName = testName;
     this.browser = await this.browserType.launch();
     this.page = await this.browser.newPage();
     this.projectId = projectId;
     const testResult = { testName, passed: true, error: null };
     try {
-      await this.page.goto(url, { timeout: 10000 });
+      if (!thisUrl.startsWith('http')) {
+        thisUrl = 'http://' + thisUrl
+      }
+      console.log(thisUrl);
+      await this.page.goto(thisUrl, { timeout: 10000 });
       await this.captureScreenshot(testName, 'start');
     } catch (error) {
+      console.log(error)
       testResult.passed = false;
       testResult.error = error.message;
       this.testResults.push(testResult);
@@ -29,11 +36,15 @@ class PlayWright {
   }
 
   async captureScreenshot(testName, stepName) {
-    const now = Math.floor(new Date().getTime() / 1000);
-    const fileName = `${this.projectId}-${testName}-${stepName}-${now.toString()}.png`.replace(/\s+/g, '-');
-    const path = `screenshots/${fileName}`;
-    await this.page.screenshot({ path });
-    this.screenshots.push(fileName)
+    try {
+      const now = Math.floor(new Date().getTime() / 1000);
+      const fileName = `${this.projectId}-${testName}-${stepName}-${now.toString()}.png`.replace(/\s+/g, '-');
+      const path = `screenshots/${fileName}`;
+      await this.page.screenshot({ path });
+      this.screenshots.push(fileName)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async getPageTitle() {
@@ -74,6 +85,7 @@ class PlayWright {
       await this.page.waitForFunction(`document.title === "${expectedTitle}"`, { timeout });
       await this.captureScreenshot(this.testName, 'wait-for-title');
     } catch (err) {
+      console.log(error)
       await this.captureScreenshot(this.testName, 'wait-for-title');
       throw new Error(`"${expectedTitle}" not found on the page`);
     }
@@ -85,6 +97,7 @@ class PlayWright {
       await field.fill(value);
       await this.captureScreenshot(this.testName, 'form-placeholder');
     } catch (err) {
+      console.log(err)
       await this.captureScreenshot(this.testName, 'form-placeholder');
       throw new Error(`Input Placeholder: "${placeholder}" not found on the page`);
     }
@@ -96,6 +109,7 @@ class PlayWright {
       await field.fill(value);
       await this.captureScreenshot(this.testName, 'form-name');
     } catch (err) {
+      console.log(err)
       await this.captureScreenshot(this.testName, 'form-name');
       throw new Error(`Input Name: "${name}" not found on the page`);
     }
@@ -136,6 +150,7 @@ class PlayWright {
       await this.captureScreenshot(this.testName, 'form-submit');
       await submitButton.click();
     } catch (err) {
+      console.log(err)
       await this.captureScreenshot(this.testName, 'form-submit');
       throw new Error(`Could not submit form.`);
     }
@@ -160,6 +175,7 @@ class PlayWright {
     try {
       await callback();
     } catch (error) {
+      console.log(error)
       testResult.passed = false;
       testResult.error = error.message;
     }

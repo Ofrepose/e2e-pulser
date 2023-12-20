@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useAuth } from "contexts/user/AuthContext";
 
-const API = 'http://localhost:5001/api/users/';
+const API = 'http://localhost:5005/api/users/';
 
 const HistoryCard = (props) => {
     const { getImages } = useAuth();

@@ -3,7 +3,7 @@ import { useAuth } from '../user/AuthContext';
 
 const ProjectContext = createContext();
 
-const API = 'http://localhost:5001/api/projects/';
+const API = 'http://localhost:5005/api/projects/';
 
 export function ProjectProvider({ children }) {
     const { getUser, user } = useAuth();

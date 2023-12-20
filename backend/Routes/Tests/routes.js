@@ -42,6 +42,7 @@ router.post('/test',
             let currentTestBind = currentProject.tests.filter(item => item.name === testName)[0];
             if (currentTestBind.testType === 'Can see text on page') {
                 results = await Main.Tester.testTextOnPage({ test: currentTestBind, projectId });
+                console.log(results);
                 results = { ...results[0], runTime }
             } else if (currentTestBind.testType === 'Can log in') {
                 results = await Main.Tester.testCanLogIn({ test: currentTestBind, projectId });

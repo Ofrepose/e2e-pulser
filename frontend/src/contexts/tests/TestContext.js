@@ -6,7 +6,7 @@ import logtastic from '@ofrepose/logtastic';
 
 const TestContext = createContext();
 
-const API = 'http://localhost:5001/api/test/';
+const API = 'http://localhost:5005/api/test/';
 
 export function TestProvider({ children }) {
   const { getUser } = useAuth();
