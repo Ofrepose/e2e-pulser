@@ -23,13 +23,13 @@ const routes = [
     icon: <MdHome className="h-6 w-6" />,
     component: <MainDashboard />,
   },
-  {
-    name: "Docs",
-    layout: "/admin",
-    icon: <MdFindInPage className="h-6 w-6" />,
-    path: "docs",
-    component: '' ,
-  },
+  // {
+  //   name: "Docs",
+  //   layout: "/admin",
+  //   icon: <MdFindInPage className="h-6 w-6" />,
+  //   path: "docs",
+  //   component: '' ,
+  // },
   {
     name: "Sign In",
     layout: "/auth",
