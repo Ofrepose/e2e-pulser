@@ -83,7 +83,7 @@ const Navbar = (props) => {
               <div className="h-px w-full bg-gray-200 dark:bg-white/20 " />
 
               <div className="flex flex-col p-4">
-                <a
+                {/* <a
                   href=" "
                   className="text-sm text-gray-800 dark:text-white hover:dark:text-white"
                 >
@@ -94,7 +94,7 @@ const Navbar = (props) => {
                   className="mt-3 text-sm text-gray-800 dark:text-white hover:dark:text-white"
                 >
                   API Settings ( most likely )
-                </a>
+                </a> */}
                 <a
                   href=" "
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
